@@ -359,4 +359,4 @@ if __name__ == "__main__":
     if not (os.path.exists(CLASS_MODEL_PATH) and os.path.exists(REG_MODEL_PATH)):
         print("Models not found, training...")
         train_models()
-    print("Start the app via: uvicorn portfolio_ml_api:app --reload")
+
