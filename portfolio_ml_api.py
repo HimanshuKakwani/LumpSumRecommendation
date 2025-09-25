@@ -1,30 +1,3 @@
-"""
-Portfolio Rebalancing ML + FastAPI
-Single-file prototype: trains ML models on synthetic data, exposes endpoints to
-- /train        -> (re)train models
-- /predict_risk -> predict risk category from holdings
-- /rebalance    -> suggest new allocations (moves from equities/MF/FD into bonds)
-- /test         -> run built-in testcases
-
-How it works (brief):
-- Synthetic dataset created with random allocations (equity, mf, fd, bonds)
-- Risk label computed by a weighted rule (for supervised training)
-- Target bond percentage computed as a rule-based "optimal" that ML regressor will learn
-- Models: RandomForestClassifier (risk), RandomForestRegressor (target_bond_pct)
-
-Run:
-1. pip install -r requirements.txt
-   (fastapi, uvicorn, scikit-learn, pandas, numpy, joblib)
-2. uvicorn portfolio_ml_api:app --reload
-
-Endpoints examples (curl):
-- Train: curl -X POST http://127.0.0.1:8000/train
-- Predict risk: curl -X POST -H "Content-Type: application/json" -d '{"equity":50000,"mf":30000,"fd":10000,"bonds":10000}' http://127.0.0.1:8000/predict_risk
-- Rebalance: curl -X POST -H "Content-Type: application/json" -d '{"equity":50000,"mf":30000,"fd":10000,"bonds":10000}' http://127.0.0.1:8000/rebalance
-
-This file is intentionally commented and modular so you can extract functions into modules later.
-"""
-
 import os
 from typing import Any, Dict, Literal
 
