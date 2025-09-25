@@ -51,10 +51,9 @@ pydantic
 
 ## ▶️ Running the API
 
-Run with uvicorn:
-```bash
+Run command:
 python -m uvicorn portfolio_ml_api:app --reload
-```
+
 
 Open API docs in your browser:
 👉 http://127.0.0.1:8000/docs
@@ -86,43 +85,4 @@ curl http://127.0.0.1:8000/test
 ```
 
 ## 📌 Notes
-- If models are missing, the app auto-trains them on startup.
-- Synthetic data is used for demo purposes — in production you can replace it with real portfolio datasets.\
-
-Test:
-/predict_risk
-i/p:
-{
-  "equity":100000 ,
-  "mf": 2500000,
-  "fd": 500000,
-  "bonds": 150000
-}
-o/p:
-{
-  "risk_score": 1.7769230769230768,
-  "risk_label": "High"
-}
-
-/rebalance
-o/p:
-{
-  "original": {
-    "equity": 100000,
-    "mf": 2500000,
-    "fd": 500000,
-    "bonds": 150000
-  },
-  "suggested": {
-    "equity": 100000,
-    "mf": 1686549.09,
-    "fd": 400000,
-    "bonds": 1063450.91
-  },
-  "moves": {
-    "from_equity": 0,
-    "from_mf": 813450.91,
-    "from_fd": 100000
-  },
-  "notes": "Target bonds pct = 0.327. Moved funds into bonds: total moved = 913450.91"
-}
+Sample inputs and outputs in Scenarios file

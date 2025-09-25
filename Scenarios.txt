@@ -1,0 +1,173 @@
+Scenarios: Risk Profile
+
+>>>>>>>> High
+1.
+i/p: {
+  "equity": 25000,
+  "mf": 1200000,
+  "fd": 500000,
+  "bonds": 0
+}
+o/p:
+{
+  "risk_score": 1.6666666666666665,
+  "risk_label": "High"
+}
+2.
+i/p:
+{
+  "equity": 25000,
+  "mf": 1200,
+  "fd": 0,
+  "bonds": 0
+}
+
+o/p:
+{
+  "risk_score": 2.954198473282443,
+  "risk_label": "High"
+}
+
+>>>>>>>> Low
+1.
+i/p:{
+  "equity": 2000,
+  "mf": 12000,
+  "fd": 500000,
+  "bonds": 50000
+}
+o/p:
+{
+  "risk_score": 0.8067375886524824,
+  "risk_label": "Low"
+}
+2.
+i/p:
+{
+  "equity": 0,
+  "mf": 1200,
+  "fd": 150000,
+  "bonds": 10000
+}
+o/p:
+Download
+{
+  "risk_score": 0.7903225806451614,
+  "risk_label": "Low"
+}
+
+>>>>>>>> Medium
+1.
+i/p:
+{
+  "equity": 20000,
+  "mf": 120000,
+  "fd": 500000,
+  "bonds": 50000
+}
+o/p:
+{
+  "risk_score": 1.0507246376811594,
+  "risk_label": "Medium"
+}
+2.
+i/p:
+{
+  "equity": 15000,
+  "mf": 12000,
+  "fd": 150000,
+  "bonds": 10000
+}
+o/p:
+{
+  "risk_score": 1.037433155080214,
+  "risk_label": "Medium"
+}
+
+------------------------------------------------------------------------------- Rebalalncing ---------------------------------------------------------------------
+>>>>>>>> High
+i/p:
+{
+  "equity": 25000,
+  "mf": 1200000,
+  "fd": 500000,
+  "bonds": 0
+}
+o/p:{
+  "original": {
+    "equity": 25000,
+    "mf": 1200000,
+    "fd": 500000,
+    "bonds": 0
+  },
+  "suggested": {
+    "equity": 25000,
+    "mf": 793104.31,
+    "fd": 400000,
+    "bonds": 506895.69
+  },
+  "moves": {
+    "from_equity": 0,
+    "from_mf": 406895.69,
+    "from_fd": 100000
+  },
+  "notes": "Target bonds pct = 0.294. Moved funds into bonds: total moved = 506895.69"
+}
+>>>>>>>> Medium
+i/p: 
+{
+  "equity": 15000,
+  "mf": 12000,
+  "fd": 150000,
+  "bonds": 10000
+}
+o/p:
+{
+  "original": {
+    "equity": 15000,
+    "mf": 12000,
+    "fd": 150000,
+    "bonds": 10000
+  },
+  "suggested": {
+    "equity": 6948.82,
+    "mf": 8223.78,
+    "fd": 107250.37,
+    "bonds": 64577.02
+  },
+  "moves": {
+    "from_equity": 8051.18,
+    "from_mf": 3776.22,
+    "from_fd": 42749.63
+  },
+  "notes": "Target bonds pct = 0.345. Moved funds into bonds: total moved = 54577.02"
+}
+>>>>>>>> Low
+i/p:
+{
+  "equity": 2000,
+  "mf": 12000,
+  "fd": 500000,
+  "bonds": 50000
+}
+o/p:
+{
+  "original": {
+    "equity": 2000,
+    "mf": 12000,
+    "fd": 500000,
+    "bonds": 50000
+  },
+  "suggested": {
+    "equity": 2000,
+    "mf": 12000,
+    "fd": 360004.66,
+    "bonds": 189995.34
+  },
+  "moves": {
+    "from_equity": 0,
+    "from_mf": 0,
+    "from_fd": 139995.34
+  },
+  "notes": "Target bonds pct = 0.337. Moved funds into bonds: total moved = 139995.34"
+}
