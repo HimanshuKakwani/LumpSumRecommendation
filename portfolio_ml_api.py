@@ -5,12 +5,22 @@ import joblib
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.metrics import classification_report, mean_absolute_error
 from sklearn.model_selection import train_test_split
 
 app = FastAPI(title="Portfolio Rebalancer ML API")
+
+# Add CORS middleware to allow cross-origin requests from anywhere
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 MODEL_DIR = "models"
 CLASS_MODEL_PATH = os.path.join(MODEL_DIR, "risk_clf.joblib")
@@ -58,12 +68,15 @@ def make_synthetic_dataset(n=2000, random_state=42):
 
     # Create a rule-based risk score (continuous)
     # weights: equity=3, mf=2, fd=0.8, bonds=0.5
-    df["risk_score"] = (
+    df["original_risk_score"] = (
         df["equity_pct"] * 3.0 + df["mf_pct"] * 2.0 + df["fd_pct"] * 0.8 + df["bonds_pct"] * 0.5
     )
+    
+    # Scale the risk score from 0-3 to 0-10
+    df["risk_score"] = (df["original_risk_score"] / 3.0) * 10.0
 
-    # create labels
-    df["risk_label"] = pd.cut(df["risk_score"], bins=[-1, 0.9, 1.6, 3.0], labels=["Low", "Medium", "High"])
+    # create labels - using original thresholds for consistency
+    df["risk_label"] = pd.cut(df["original_risk_score"], bins=[-1, 0.9, 1.6, 3.0], labels=["Low", "Medium", "High"])
 
     # Define an "optimal" target bond percentage (rule-based):
     # - If High risk: target_bond_pct = current_bonds_pct + 0.25 (cap 0.8)
@@ -142,10 +155,19 @@ def compute_rule_risk_and_label(holdings: Dict[str, float]):
     if total <= 0:
         return 0.0, "Low"
     eq_pct, mf_pct, fd_pct, bd_pct = eq / total, mf / total, fd / total, bd / total
-    rs = eq_pct * 3.0 + mf_pct * 2.0 + fd_pct * 0.8 + bd_pct * 0.5
-    if rs <= 0.9:
+    # Calculate the original risk score (0-3 scale)
+    original_rs = eq_pct * 3.0 + mf_pct * 2.0 + fd_pct * 0.8 + bd_pct * 0.5
+    
+    # Scale the risk score from 0-3 to 0-10
+    # The theoretical max value is 3.0 (if 100% in equity)
+    rs = (original_rs / 3.0) * 10.0
+    
+    # Use the original thresholds but scaled to the new range
+    # Original thresholds: 0.9 and 1.6 on a 0-3 scale
+    # New thresholds: 3.0 and 5.33 on a 0-10 scale
+    if original_rs <= 0.9:
         lab = "Low"
-    elif rs <= 1.6:
+    elif original_rs <= 1.6:
         lab = "Medium"
     else:
         lab = "High"
