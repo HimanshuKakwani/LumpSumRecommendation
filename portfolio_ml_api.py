@@ -5,12 +5,22 @@ import joblib
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.metrics import classification_report, mean_absolute_error
 from sklearn.model_selection import train_test_split
 
 app = FastAPI(title="Portfolio Rebalancer ML API")
+
+# Add CORS middleware to allow cross-origin requests from anywhere
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 MODEL_DIR = "models"
 CLASS_MODEL_PATH = os.path.join(MODEL_DIR, "risk_clf.joblib")
